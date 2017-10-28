@@ -16,6 +16,9 @@ $(document).ready(function() {
   // Instance a new player object
   var player = new Player(2 * gap.x, 5 * gap.y, gap.x, gap.y, "time", "peper");
 
+  // Instance a new brain
+  var brain=new Brain(5*gap.x, 5*gap.y, gap.x,gap.y, "brain");
+
   document.getElementById("start-game").onclick = function() {
     startGame();
   };
@@ -46,8 +49,9 @@ $(document).ready(function() {
 
 
   function startGame() {
-    drawBoard();
-    drawPlayer();
+  drawBoard();
+  drawPlayer();
+  drawBrain();
   }
 
   function drawBoard() {
@@ -79,13 +83,22 @@ $(document).ready(function() {
     imgPlayer.src = player.img;
   }
 
-function clearCanvas(){
-}
+  function drawBrain() {
+    var imgBrain = new Image();
+    imgBrain.onload = function() {
+      ctx.drawImage(imgBrain, brain.x, brain.y, brain.width, brain.height);
+    };
+    imgBrain.src = brain.img;
+  }
 
-function updateCanvas(){
-  drawBoard();
-  drawPlayer();
-}
+
+  function clearCanvas() {}
+
+  function updateCanvas() {
+    drawBoard();
+    drawPlayer();
+    drawBrain();
+  }
   console.log(board.grid);
 
 
