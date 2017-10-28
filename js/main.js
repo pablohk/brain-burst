@@ -16,7 +16,6 @@ $(document).ready(function() {
   // Instance a new player object
   var player = new Player(2 * gap.x, 5 * gap.y, gap.x, gap.y, "time", "peper");
 
-  console.log(gap);
   document.getElementById("start-game").onclick = function() {
     startGame();
   };
@@ -24,25 +23,25 @@ $(document).ready(function() {
   window.onkeydown = function(e) {
     switch (e.keyCode) {
       case 37:
-        //player.moveLeft();
+        player.moveLeft(gap);
         console.log("move left");
         break;
       case 38:
-        //player.moveTop();
+        player.moveTop(gap);
         console.log("move top");
         break;
       case 39:
-        //player.moveRigth();
+        player.moveRight(gap);
         console.log("move right");
         break;
 
       case 40:
-        //player.moveDown();
-        console.log("move down");
+        player.moveBottom(gap);
+        console.log("move bottom");
         break;
       default:
     }
-    //updateCanvas();
+    updateCanvas();
   };
 
 
@@ -80,6 +79,13 @@ $(document).ready(function() {
     imgPlayer.src = player.img;
   }
 
+function clearCanvas(){
+}
+
+function updateCanvas(){
+  drawBoard();
+  drawPlayer();
+}
   console.log(board.grid);
 
 
