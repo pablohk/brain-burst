@@ -1,10 +1,22 @@
 $(document).ready(function() {
+  // Prepare the canvas layout
   var canvas = document.getElementById('player-one');
   var ctx = canvas.getContext('2d');
+
+  // Get the canvas width and height declared in the html tag
   var width = $('#player-one').width();
   var height = $('#player-one').height();
+
+  // Instance a new broad object
   var board = new Board(width, height, "black");
-  board.fillGrid();
+
+  // fill the board with brick to define the map
+  var gap = board.fillGrid();
+
+  // Instance a new player object
+  var player = new Player(2 * gap.x, 5 * gap.y, gap.x, gap.y, "time", "peper");
+
+  console.log(gap);
   document.getElementById("start-game").onclick = function() {
     startGame();
   };
@@ -35,8 +47,8 @@ $(document).ready(function() {
 
 
   function startGame() {
-
     drawBoard();
+    drawPlayer();
   }
 
   function drawBoard() {
@@ -47,21 +59,28 @@ $(document).ready(function() {
   }
 
   function drawWall() {
-      _.forEach(board.grid, function(row) {
+    _.forEach(board.grid, function(row) {
       _.forEach(row, function(colum) {
         if (colum) {
-          var brick = new Image();
-          brick.onload = function() {
-            ctx.drawImage(brick, colum.x, colum.y, colum.width, colum.height);
+          var imgBrick = new Image();
+          imgBrick.onload = function() {
+            ctx.drawImage(imgBrick, colum.x, colum.y, colum.width, colum.height);
           };
-          brick.src = colum.img;
+          imgBrick.src = colum.img;
         }
       });
     });
   }
 
+  function drawPlayer() {
+    var imgPlayer = new Image();
+    imgPlayer.onload = function() {
+      ctx.drawImage(imgPlayer, player.x, player.y, player.width, player.height);
+    };
+    imgPlayer.src = player.img;
+  }
 
-
+  console.log(board.grid);
 
 
   //END
