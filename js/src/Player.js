@@ -34,17 +34,17 @@ Player.prototype.moveBottom = function(pattern) {
 };
 
 Player.prototype.canMoveLeft = function(pattern) {
-  return !pattern[this.x - 1][this.y] ? true : false;
+  return !pattern[this.y][this.x - 1] ? true : false;
 };
 
 Player.prototype.canMoveRight = function(pattern) {
-  return !pattern[this.x + 1][this.y] ? true : false;
+  return !pattern[this.y][this.x + 1] ? true : false;
 };
 
 Player.prototype.canMoveTop = function(pattern) {
-  return !pattern[this.x][this.y - 1] ? true : false;
+  return !pattern[this.y-1][this.x] ? true : false;
 };
 
 Player.prototype.canMoveBottom = function(pattern) {
-  return !pattern[this.x][this.y + 1] ? true : false;
+  return !pattern[this.y+1][this.x] ? true : false;
 };

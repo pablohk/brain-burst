@@ -26,7 +26,6 @@ $(document).ready(function() {
   // Listen key arrow action
   window.onkeydown = function(e) {
     switch (e.keyCode) {
-
       case 37:
         console.log("move left");
         player.moveLeft(grid.pattern);
@@ -48,12 +47,12 @@ $(document).ready(function() {
         break;
       default:
     }
-    updateCanvas();
   };
 
 
   function startGame() {
-    updateCanvas();
+    var intervalID=setInterval(updateCanvas,0.1*1000);
+    //updateCanvas();
   }
 
   function drawBoard() {
@@ -64,7 +63,7 @@ $(document).ready(function() {
 
   function drawWall() {
     var imgBrick = new Image();
-    var brick=new Brick();
+    var brick = new Brick();
     imgBrick.src = brick.img;
     imgBrick.onload = function() {
       for (var y = 0; y < grid.cellsY(); y++) {
@@ -99,6 +98,8 @@ $(document).ready(function() {
   function clearCanvas() {}
 
   function updateCanvas() {
+     $('#x').html(player.x);
+     $('#y').html(player.y);
     drawBoard();
     drawWall();
     drawBrain();
