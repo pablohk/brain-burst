@@ -2,7 +2,8 @@ $(document).ready(function() {
   // Prepare the canvas layout
   var canvas = document.getElementById('player-one');
   var ctx = canvas.getContext('2d');
-
+  ctx.imageSmoothingEnabled = false;
+  /*--------------------------------------------------------------------ç*/
   // Get the canvas width and height declared in the html tag
   var width = $('#player-one').width();
   var height = $('#player-one').height();
@@ -11,99 +12,41 @@ $(document).ready(function() {
   var grid = new Grid();
 
   // Instance anew broad object
-  var board = new Board(width, height, "black", grid);
+  var board = new Board(width, height, "#000", grid);
 
   // Instance  new player object
-  var player = new Player(2, 5, board.gapX(), board.gapY(), "time", "peper");
+  var player = new Player(3, 5, board.gapX(), board.gapY(), "time");
   // Instance  new brain
-  var brain = new Brain(5, 5, board.gapX(), board.gapY(), "brain");
+  var brain = new Brain(5, 5, board.gapX(), board.gapY());
 
   // Start the game when the user press the star button
   document.getElementById("start-game").onclick = function() {
     startGame();
   };
 
-  // Listen key arrow action
-  window.onkeydown = function(e) {
-    switch (e.keyCode) {
-      case 37:
-        console.log("move left");
-        if (player.x - 1 == brain.x && player.y == brain.y) {
-          if (brain.canMoveLeft(grid.pattern)) {
-            brain.moveLeft(grid.pattern);
-            player.moveLeft(grid.pattern);
-          }
-        } else {
-          player.moveLeft(grid.pattern);
-        }
-        break;
-
-      case 38:
-        console.log("move top");
-        if (player.y -1 == brain.y && player.x == brain.x) {
-          if (brain.canMoveTop(grid.pattern)) {
-            brain.moveTop(grid.pattern);
-            player.moveTop(grid.pattern);
-          }
-        } else {
-          player.moveTop(grid.pattern);
-        }
-        break;
-
-      case 39:
-        console.log("move right");
-        if (player.x + 1 == brain.x && player.y == brain.y) {
-          if (brain.canMoveRight(grid.pattern)) {
-            brain.moveRight(grid.pattern);
-            player.moveRight(grid.pattern);
-          }
-        } else {
-          player.moveRight(grid.pattern);
-        }
-        break;
-
-      case 40:
-        console.log("move bottom");
-        if (player.y + 1 == brain.y && player.x == brain.x) {
-          if (brain.canMoveBottom(grid.pattern)) {
-            brain.moveBottom(grid.pattern);
-            player.moveBottom(grid.pattern);
-          }
-        } else {
-          player.moveBottom(grid.pattern);
-        }
-        break;
-      default:
-    }
-  };
-
-
   function startGame() {
-    var intervalID = setInterval(updateCanvas, 0.1 * 1000);
-    //updateCanvas();
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, width, height);
+    var intervalID = setInterval(listenKeyDown, 0.2 * 1000);
   }
 
   function drawBoard() {
-    ctx.fillStile = board.color;
-    ctx.fillRect(0, 0, board.width, board.height);
-    //drawObstacle();
-  }
-
-  function drawWall() {
     var imgBrick = new Image();
     var brick = new Brick();
-    imgBrick.src = brick.img;
     imgBrick.onload = function() {
       for (var y = 0; y < grid.cellsY(); y++) {
         for (var x = 0; x < grid.cellsX(); x++) {
-          var bricka = new Brick(x * board.gapX(), y * board.gapY(), board.gapX(), board.gapY(), "brick[" + y + "," + x);
           if (grid.pattern[y][x]) {
-            ctx.drawImage(imgBrick, bricka.x, bricka.y, bricka.width, bricka.height);
+            brick.x = x * board.gapX();
+            brick.y = y * board.gapY();
+            brick.width = board.gapX();
+            brick.height = board.gapY();
+            ctx.drawImage(imgBrick, brick.x, brick.y, brick.width, brick.height);
           }
         }
       }
     };
-
+    imgBrick.src = brick.img;
   }
 
   function drawPlayer() {
@@ -122,18 +65,79 @@ $(document).ready(function() {
     imgBrain.src = brain.img;
   }
 
-
-  function clearCanvas() {}
+  function clearCanvas() {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, width, height);
+  }
 
   function updateCanvas() {
     $('#x').html(player.x);
     $('#y').html(player.y);
+    clearCanvas();
     drawBoard();
-    drawWall();
     drawBrain();
     drawPlayer();
 
   }
+
+  // Listen key arrow action
+  function listenKeyDown() {
+
+    window.onkeydown = function(e) {
+      switch (e.keyCode) {
+        case 37:
+          console.log("move left");
+          if (player.x - 1 == brain.x && player.y == brain.y) {
+            if (brain.canMoveLeft(grid.pattern)) {
+              brain.moveLeft(grid.pattern);
+              player.moveLeft(grid.pattern);
+            }
+          } else {
+            player.moveLeft(grid.pattern);
+          }
+          break;
+
+        case 38:
+          console.log("move top");
+          if (player.y - 1 == brain.y && player.x == brain.x) {
+            if (brain.canMoveTop(grid.pattern)) {
+              brain.moveTop(grid.pattern);
+              player.moveTop(grid.pattern);
+            }
+          } else {
+            player.moveTop(grid.pattern);
+          }
+          break;
+
+        case 39:
+          console.log("move right");
+          if (player.x + 1 == brain.x && player.y == brain.y) {
+            if (brain.canMoveRight(grid.pattern)) {
+              brain.moveRight(grid.pattern);
+              player.moveRight(grid.pattern);
+            }
+          } else {
+            player.moveRight(grid.pattern);
+          }
+          break;
+
+        case 40:
+          console.log("move bottom");
+          if (player.y + 1 == brain.y && player.x == brain.x) {
+            if (brain.canMoveBottom(grid.pattern)) {
+              brain.moveBottom(grid.pattern);
+              player.moveBottom(grid.pattern);
+            }
+          } else {
+            player.moveBottom(grid.pattern);
+          }
+          break;
+        default:
+      }
+    };
+    updateCanvas();
+  };
+
 
   //END
 });

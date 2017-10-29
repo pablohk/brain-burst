@@ -1,8 +1,13 @@
-function Brick(x,y,width, height,id){
-  this.x=x;
-  this.y=y;
-  this.width=width;
-  this.height=height;
-  this.img= "./media/img/brick.png";
-  this.id=id;
+/*  Brick Object.
+    Inherits from GameElements and takes the Brick's constructor as default
+   - id: Brick element identifier.
+   - img: Background image of this brick. All bricks have same image.
+*/
+function Brick(x,y,width,height) {
+  Fixed.call(this,x,y,width,height);
+  this.img = "./media/img/brick.png";
+  this.id="Brick";
 }
+
+Brick.prototype = Object.create(Fixed.prototype);
+Brick.prototype.constructor = Brick;
