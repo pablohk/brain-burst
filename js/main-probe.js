@@ -21,8 +21,12 @@ $(document).ready(function() {
   // Instance  new brain
   var brain = new Brain(5, 5, board.gapX(), board.gapY());
 
-  // Instance  new Trash
-  var trash = new Trash(15, 16, board.gapX(), board.gapY());
+  window.requestAnimFrame = (function(callback) {
+    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+      function(callback) {
+        window.setTimeout(callback, 1*1000);
+      };
+  })();
 
   // Start the game when the user press the star button
   document.getElementById("start-game").onclick = function() {
@@ -40,10 +44,8 @@ $(document).ready(function() {
     $('#y').html(player.y);
     clearCanvas();
     prepareBoard();
-    prepareTrash();
     preparePlayer();
     prepareBrain();
-
   }
 
   function prepareBoard() {
@@ -81,14 +83,6 @@ $(document).ready(function() {
     imgBrain.src = brain.img;
   }
 
-  function prepareTrash() {
-    var imgTrash = new Image();
-    imgTrash.onload = function() {
-      ctx.drawImage(imgTrash, trash.x * board.gapX(), trash.y * board.gapY(), trash.width, trash.height);
-    };
-    imgTrash.src = trash.img;
-    console.log(trash);
-  }
   function clearCanvas() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, width, height);
@@ -151,12 +145,5 @@ $(document).ready(function() {
     };
   };
 
-  /*window.requestAnimFrame = (function(callback) {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-      function(callback) {
-        window.setTimeout(callback, 1*1000);
-      };
-  })();*/
-  //-----------------------------------------------------
   //END
 });
