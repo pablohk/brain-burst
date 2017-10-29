@@ -7,40 +7,44 @@ $(document).ready(function() {
   var width = $('#player-one').width();
   var height = $('#player-one').height();
 
-  // Instance a new broad object
-  var board = new Board(width, height, "black");
+  // Instancie  new pattern object
+  var grid = new Grid();
 
-  // fill the board with brick to define the map
-  var gap = board.fillGrid();
+  // Instance anew broad object
+  var board = new Board(width, height, "black", grid);
 
-  // Instance a new player object
-  var player = new Player(2 * gap.x, 5 * gap.y, gap.x, gap.y, "time", "peper");
+  // Instance  new player object
+  var player = new Player(2, 5, board.gapX(), board.gapY(), "time", "peper");
+  // Instance  new brain
+  var brain = new Brain(5, 5, board.gapX(), board.gapY(), "brain");
 
-  // Instance a new brain
-  var brain=new Brain(5*gap.x, 5*gap.y, gap.x,gap.y, "brain");
-
+  // Start the game when the user press the star button
   document.getElementById("start-game").onclick = function() {
     startGame();
   };
 
+  // Listen key arrow action
   window.onkeydown = function(e) {
     switch (e.keyCode) {
+
       case 37:
-        player.moveLeft(gap);
         console.log("move left");
+        player.moveLeft(grid.pattern);
         break;
+
       case 38:
-        player.moveTop(gap);
         console.log("move top");
+        player.moveTop(grid.pattern);
         break;
+
       case 39:
-        player.moveRight(gap);
         console.log("move right");
+        player.moveRight(grid.pattern);
         break;
 
       case 40:
-        player.moveBottom(gap);
         console.log("move bottom");
+        player.moveBottom(grid.pattern);
         break;
       default:
     }
@@ -49,36 +53,36 @@ $(document).ready(function() {
 
 
   function startGame() {
-  drawBoard();
-  drawPlayer();
-  drawBrain();
+    updateCanvas();
   }
 
   function drawBoard() {
     ctx.fillStile = board.color;
     ctx.fillRect(0, 0, board.width, board.height);
-    drawWall();
     //drawObstacle();
   }
 
   function drawWall() {
-    _.forEach(board.grid, function(row) {
-      _.forEach(row, function(colum) {
-        if (colum) {
-          var imgBrick = new Image();
-          imgBrick.onload = function() {
-            ctx.drawImage(imgBrick, colum.x, colum.y, colum.width, colum.height);
-          };
-          imgBrick.src = colum.img;
+    var imgBrick = new Image();
+    var brick=new Brick();
+    imgBrick.src = brick.img;
+    imgBrick.onload = function() {
+      for (var y = 0; y < grid.cellsY(); y++) {
+        for (var x = 0; x < grid.cellsX(); x++) {
+          var bricka = new Brick(x * board.gapX(), y * board.gapY(), board.gapX(), board.gapY(), "brick[" + y + "," + x);
+          if (grid.pattern[y][x]) {
+            ctx.drawImage(imgBrick, bricka.x, bricka.y, bricka.width, bricka.height);
+          }
         }
-      });
-    });
+      }
+    };
+
   }
 
   function drawPlayer() {
     var imgPlayer = new Image();
     imgPlayer.onload = function() {
-      ctx.drawImage(imgPlayer, player.x, player.y, player.width, player.height);
+      ctx.drawImage(imgPlayer, player.x * board.gapX(), player.y * board.gapY(), player.width, player.height);
     };
     imgPlayer.src = player.img;
   }
@@ -86,7 +90,7 @@ $(document).ready(function() {
   function drawBrain() {
     var imgBrain = new Image();
     imgBrain.onload = function() {
-      ctx.drawImage(imgBrain, brain.x, brain.y, brain.width, brain.height);
+      ctx.drawImage(imgBrain, brain.x * board.gapX(), brain.y * board.gapY(), brain.width, brain.height);
     };
     imgBrain.src = brain.img;
   }
@@ -96,11 +100,11 @@ $(document).ready(function() {
 
   function updateCanvas() {
     drawBoard();
-    drawPlayer();
+    drawWall();
     drawBrain();
-  }
-  console.log(board.grid);
+    drawPlayer();
 
+  }
 
   //END
 });
