@@ -28,22 +28,50 @@ $(document).ready(function() {
     switch (e.keyCode) {
       case 37:
         console.log("move left");
-        player.moveLeft(grid.pattern);
+        if (player.x - 1 == brain.x && player.y == brain.y) {
+          if (brain.canMoveLeft(grid.pattern)) {
+            brain.moveLeft(grid.pattern);
+            player.moveLeft(grid.pattern);
+          }
+        } else {
+          player.moveLeft(grid.pattern);
+        }
         break;
 
       case 38:
         console.log("move top");
-        player.moveTop(grid.pattern);
+        if (player.y -1 == brain.y && player.x == brain.x) {
+          if (brain.canMoveTop(grid.pattern)) {
+            brain.moveTop(grid.pattern);
+            player.moveTop(grid.pattern);
+          }
+        } else {
+          player.moveTop(grid.pattern);
+        }
         break;
 
       case 39:
         console.log("move right");
-        player.moveRight(grid.pattern);
+        if (player.x + 1 == brain.x && player.y == brain.y) {
+          if (brain.canMoveRight(grid.pattern)) {
+            brain.moveRight(grid.pattern);
+            player.moveRight(grid.pattern);
+          }
+        } else {
+          player.moveRight(grid.pattern);
+        }
         break;
 
       case 40:
         console.log("move bottom");
-        player.moveBottom(grid.pattern);
+        if (player.y + 1 == brain.y && player.x == brain.x) {
+          if (brain.canMoveBottom(grid.pattern)) {
+            brain.moveBottom(grid.pattern);
+            player.moveBottom(grid.pattern);
+          }
+        } else {
+          player.moveBottom(grid.pattern);
+        }
         break;
       default:
     }
@@ -51,7 +79,7 @@ $(document).ready(function() {
 
 
   function startGame() {
-    var intervalID=setInterval(updateCanvas,0.1*1000);
+    var intervalID = setInterval(updateCanvas, 0.1 * 1000);
     //updateCanvas();
   }
 
@@ -98,8 +126,8 @@ $(document).ready(function() {
   function clearCanvas() {}
 
   function updateCanvas() {
-     $('#x').html(player.x);
-     $('#y').html(player.y);
+    $('#x').html(player.x);
+    $('#y').html(player.y);
     drawBoard();
     drawWall();
     drawBrain();
