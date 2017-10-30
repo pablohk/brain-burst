@@ -8,25 +8,29 @@ Movable.prototype.constructor= Movable;
 Movable.prototype.moveLeft = function(pattern) {
   if (this.canMoveLeft(pattern)) {
     this.x--;
-  }
+    return true;
+  }else return false;
 };
 
 Movable.prototype.moveRight = function(pattern) {
   if (this.canMoveRight(pattern)) {
     this.x++;
-  }
+    return true;
+  }else return false;
 };
 
 Movable.prototype.moveTop = function(pattern) {
   if (this.canMoveTop(pattern)) {
     this.y--;
-  }
+    return true;
+  }else return false;
 };
 
 Movable.prototype.moveBottom = function(pattern) {
   if (this.canMoveBottom(pattern)) {
     this.y++;
-  }
+    return true;
+  }else return false;
 };
 
 Movable.prototype.canMoveLeft = function(pattern) {

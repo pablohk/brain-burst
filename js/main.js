@@ -12,83 +12,88 @@ $(document).ready(function() {
   // Instancie  new pattern object
   var grid = new Grid();
 
-  // Instance  new broad object
+  // Instance new broad object
   var board = new Board(width, height, "#000", grid);
 
-  // Instance  new player object
-  var player = new Player(3, 5, board.gapX(), board.gapY(), "time");
+  // Instance new Zombie object
+  var zombie = new Zombie(3, 5, board.gapX(), board.gapY(), "time");
 
-  // Instance  new brain
-  var brain = new Brain(5, 5, board.gapX(), board.gapY());
+  // Instance new brains
+  var brains = [new Brain(5, 5, board.gapX(), board.gapY(), 1),
+    new Brain(5, 7, board.gapX(), board.gapY(), 2)
+  ];
 
-  // Instance  new Trash
-  var trash = new Trash(15, 16, board.gapX(), board.gapY());
+  // Instance new Trashes
+  var trashes = [new Trash(15, 16, board.gapX(), board.gapY()),
+    new Trash(13, 16, board.gapX(), board.gapY())
+  ];
 
   // Start the game when the user press the star button
-  document.getElementById("start-game").onclick = function() {
+  /*document.getElementById("start-game").onclick = function() {
     startGame();
-  };
+  };*/
+  startGame();
 
   function startGame() {
-    clearCanvas();
+    //console.log("---In startGame");
+    //clearCanvas();
     paintCanvas();
     listenKeyDown();
   }
 
   function paintCanvas() {
-    $('#x').html(player.x);
-    $('#y').html(player.y);
-    clearCanvas();
-    prepareBoard();
-    prepareTrash();
-    preparePlayer();
-    prepareBrain();
+    //console.log("---In paintCanvas");
+    $('#x').html("Coordenada Zombie X: " + zombie.x);
+    $('#y').html("Coordenada Zombie Y: " + zombie.y);
+    prepareBoard(); // Must be the first in paint
+    paintElement(trashes); // Must be the second in paint
+    paintElement(zombie); // Must be the thirth in paint
+    paintElement(brains); // Must be the fourth in paint
 
   }
 
   function prepareBoard() {
-    var imgBrick = new Image();
-    var brick = new Brick();
-    imgBrick.onload = function() {
-      for (var y = 0; y < grid.cellsY(); y++) {
-        for (var x = 0; x < grid.cellsX(); x++) {
-          if (grid.pattern[y][x]) {
-            brick.x = x * board.gapX();
-            brick.y = y * board.gapY();
-            brick.width = board.gapX();
-            brick.height = board.gapY();
-            ctx.drawImage(imgBrick, brick.x, brick.y, brick.width, brick.height);
-          }
+    var img;
+    grid.pattern.forEach(function(eY, indexY) {
+      eY.forEach(function(eX, indexX) {
+        if (eX) {
+          img = new Image();
+          var brick = new Brick(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
+          img.onload = function() {
+            ctx.drawImage(img, brick.x, brick.y, brick.width, brick.height);
+          };
+          img.src = brick.img;
+        } else {
+          ctx.fillStyle = 'black';
+          ctx.fillRect(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
         }
-      }
-    };
-    imgBrick.src = brick.img;
+      });
+    });
   }
 
-  function preparePlayer() {
-    var imgPlayer = new Image();
-    imgPlayer.onload = function() {
-      ctx.drawImage(imgPlayer, player.x * board.gapX(), player.y * board.gapY(), player.width, player.height);
-    };
-    imgPlayer.src = player.img;
+  function paintElement(element) {
+    //console.log("---In prepareElement");
+    //console.log(element);
+    var img;
+    if (Array.isArray(element)) {
+      element.forEach(function(e) {
+        img = new Image();
+        //console.log("--prepareElement: forEach");
+        //console.log(e);
+        img.onload = function() {
+          ctx.drawImage(img, e.x * board.gapX(), e.y * board.gapY(), e.width, e.height);
+        };
+        img.src = e.img;
+      });
+    } else {
+      img = new Image();
+      img.onload = function() {
+        ctx.drawImage(img, element.x * board.gapX(), element.y * board.gapY(), element.width, element.height);
+      };
+      img.src = element.img;
+    }
   }
 
-  function prepareBrain() {
-    var imgBrain = new Image();
-    imgBrain.onload = function() {
-      ctx.drawImage(imgBrain, brain.x * board.gapX(), brain.y * board.gapY(), brain.width, brain.height);
-    };
-    imgBrain.src = brain.img;
-  }
-
-  function prepareTrash() {
-    var imgTrash = new Image();
-    imgTrash.onload = function() {
-      ctx.drawImage(imgTrash, trash.x * board.gapX(), trash.y * board.gapY(), trash.width, trash.height);
-    };
-    imgTrash.src = trash.img;
-    console.log(trash);
-  }
   function clearCanvas() {
     ctx.fillStyle = '#000';
     ctx.fillRect(0, 0, width, height);
@@ -97,57 +102,70 @@ $(document).ready(function() {
   // Listen key arrow action.
   function listenKeyDown() {
     window.onkeydown = function(e) {
+      var match = false;
       switch (e.keyCode) {
-        case 37:
+        case 37: // left
           console.log("move left");
-          if (player.x - 1 == brain.x && player.y == brain.y) {
-            if (brain.canMoveLeft(grid.pattern)) {
-              brain.moveLeft(grid.pattern);
-              player.moveLeft(grid.pattern);
+          brains.forEach(function(brain) {
+            if (zombie.x - 1 == brain.x && zombie.y == brain.y) {
+              match = true;
+              if (brain.moveLeft(grid.pattern)) {
+                zombie.moveLeft(grid.pattern);
+              }
             }
-          } else {
-            player.moveLeft(grid.pattern);
+          });
+          if (!match) {
+            zombie.moveLeft(grid.pattern);
           }
           break;
 
-        case 38:
+        case 38: // top
           console.log("move top");
-          if (player.y - 1 == brain.y && player.x == brain.x) {
-            if (brain.canMoveTop(grid.pattern)) {
-              brain.moveTop(grid.pattern);
-              player.moveTop(grid.pattern);
+          brains.forEach(function(brain) {
+            if (zombie.y - 1 == brain.y && zombie.x == brain.x) {
+              match = true;
+              if (brain.moveTop(grid.pattern)) {
+                zombie.moveTop(grid.pattern);
+              }
             }
-          } else {
-            player.moveTop(grid.pattern);
+          });
+          if (!match) {
+            zombie.moveTop(grid.pattern);
           }
           break;
 
-        case 39:
+        case 39: // rright
           console.log("move right");
-          if (player.x + 1 == brain.x && player.y == brain.y) {
-            if (brain.canMoveRight(grid.pattern)) {
-              brain.moveRight(grid.pattern);
-              player.moveRight(grid.pattern);
+          brains.forEach(function(brain) {
+            if (zombie.x + 1 == brain.x && zombie.y == brain.y) {
+              match = true;
+              if (brain.moveRight(grid.pattern)) {
+                zombie.moveRight(grid.pattern);
+              }
             }
-          } else {
-            player.moveRight(grid.pattern);
+          });
+          if (!match) {
+            zombie.moveRight(grid.pattern);
           }
           break;
 
-        case 40:
+        case 40: // bottom
           console.log("move bottom");
-          if (player.y + 1 == brain.y && player.x == brain.x) {
-            if (brain.canMoveBottom(grid.pattern)) {
-              brain.moveBottom(grid.pattern);
-              player.moveBottom(grid.pattern);
+          brains.forEach(function(brain) {
+            if (zombie.y + 1 == brain.y && zombie.x == brain.x) {
+              match = true;
+              if (brain.moveBottom(grid.pattern)) {
+                zombie.moveBottom(grid.pattern);
+              }
             }
-          } else {
-            player.moveBottom(grid.pattern);
+          });
+          if (!match) {
+            zombie.moveBottom(grid.pattern);
           }
           break;
         default:
       }
-      paintCanvas();
+      window.requestAnimationFrame(paintCanvas);
     };
   };
 

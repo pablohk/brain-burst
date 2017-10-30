@@ -21,6 +21,7 @@ function Grid() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
   ];
+
 };
 Grid.prototype.cellsX = function() {
   return this.pattern[0].length;
