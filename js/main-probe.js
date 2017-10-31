@@ -16,11 +16,11 @@ $(document).ready(function() {
   var board = new Board(width, height, "#000", grid);
 
   // Instance new Zombie object
-  var zombie = new Zombie(3, 5, board.gapX(), board.gapY(), "time");
+  var zombie = new Zombie(8, 5, board.gapX(), board.gapY(), "time");
 
   // Instance new brains
-  var brains = [new Brain(5, 5, board.gapX(), board.gapY(), 1),
-    new Brain(5, 7, board.gapX(), board.gapY(), 2)
+  var brains = [new Brain(7, 5, board.gapX(), board.gapY(), 1),
+    new Brain(6, 5, board.gapX(), board.gapY(), 2)
   ];
 
   // Instance new Trashes
@@ -102,19 +102,19 @@ $(document).ready(function() {
   // Listen key arrow action.
   function listenKeyDown() {
     window.onkeydown = function(e) {
-      var match = false;
+      var nextTo = false; // Use to eval if the zombie is next to brain or no
       switch (e.keyCode) {
         case 37: // left
           console.log("move left");
           brains.forEach(function(brain) {
             if (zombie.x - 1 == brain.x && zombie.y == brain.y) {
-              match = true;
-              if (brain.moveLeft(grid.pattern)) {
+              nextTo = true;
+              if (brain.moveLeft(grid.pattern,brains)) {
                 zombie.moveLeft(grid.pattern);
               }
             }
           });
-          if (!match) {
+          if (!nextTo) {
             zombie.moveLeft(grid.pattern);
           }
           break;
@@ -123,13 +123,13 @@ $(document).ready(function() {
           console.log("move top");
           brains.forEach(function(brain) {
             if (zombie.y - 1 == brain.y && zombie.x == brain.x) {
-              match = true;
-              if (brain.moveTop(grid.pattern)) {
+              nextTo = true;
+              if (brain.moveTop(grid.pattern,brains)) {
                 zombie.moveTop(grid.pattern);
               }
             }
           });
-          if (!match) {
+          if (!nextTo) {
             zombie.moveTop(grid.pattern);
           }
           break;
@@ -138,13 +138,13 @@ $(document).ready(function() {
           console.log("move right");
           brains.forEach(function(brain) {
             if (zombie.x + 1 == brain.x && zombie.y == brain.y) {
-              match = true;
-              if (brain.moveRight(grid.pattern)) {
+              nextTo = true;
+              if (brain.moveRight(grid.pattern,brains)) {
                 zombie.moveRight(grid.pattern);
               }
             }
           });
-          if (!match) {
+          if (!nextTo) {
             zombie.moveRight(grid.pattern);
           }
           break;
@@ -153,13 +153,13 @@ $(document).ready(function() {
           console.log("move bottom");
           brains.forEach(function(brain) {
             if (zombie.y + 1 == brain.y && zombie.x == brain.x) {
-              match = true;
-              if (brain.moveBottom(grid.pattern)) {
+              nextTo = true;
+              if (brain.moveBottom(grid.pattern,brains)) {
                 zombie.moveBottom(grid.pattern);
               }
             }
           });
-          if (!match) {
+          if (!nextTo) {
             zombie.moveBottom(grid.pattern);
           }
           break;
