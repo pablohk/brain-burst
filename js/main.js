@@ -16,16 +16,16 @@ $(document).ready(function() {
   var board = new Board(width, height, "#000", grid);
 
   // Instance new Zombie object
-  var zombie = new Zombie(8, 5, board.gapX(), board.gapY(), "time");
+  var zombie = new Zombie(6, 4, board.gapX(), board.gapY(), "time");
 
   // Instance new brains
-  var brains = [new Brain(7, 5, board.gapX(), board.gapY(), 1),
-    new Brain(6, 5, board.gapX(), board.gapY(), 2)
+  var brains = [new Brain(6, 5, board.gapX(), board.gapY(), 1),
+    new Brain(7, 5, board.gapX(), board.gapY(), 2)
   ];
 
   // Instance new Trashes
-  var trashes = [new Trash(15, 16, board.gapX(), board.gapY()),
-    new Trash(13, 16, board.gapX(), board.gapY())
+  var trashes = [new Trash(6, 8, board.gapX(), board.gapY()),
+    new Trash(7, 8, board.gapX(), board.gapY())
   ];
 
   // Start the game when the user press the star button
@@ -49,7 +49,6 @@ $(document).ready(function() {
     paintElement(trashes); // Must be the second in paint
     paintElement(zombie); // Must be the thirth in paint
     paintElement(brains); // Must be the fourth in paint
-
   }
 
   function prepareBoard() {
@@ -102,6 +101,7 @@ $(document).ready(function() {
   // Listen key arrow action.
   function listenKeyDown() {
     window.onkeydown = function(e) {
+      window.requestAnimationFrame(paintCanvas);
       var nextTo = false; // Use to eval if the zombie is next to brain or no
       switch (e.keyCode) {
         case 37: // left
@@ -109,7 +109,7 @@ $(document).ready(function() {
           brains.forEach(function(brain) {
             if (zombie.x - 1 == brain.x && zombie.y == brain.y) {
               nextTo = true;
-              if (brain.moveLeft(grid.pattern,brains)) {
+              if (brain.moveLeft(grid.pattern, brains)) {
                 zombie.moveLeft(grid.pattern);
               }
             }
@@ -124,7 +124,7 @@ $(document).ready(function() {
           brains.forEach(function(brain) {
             if (zombie.y - 1 == brain.y && zombie.x == brain.x) {
               nextTo = true;
-              if (brain.moveTop(grid.pattern,brains)) {
+              if (brain.moveTop(grid.pattern, brains)) {
                 zombie.moveTop(grid.pattern);
               }
             }
@@ -139,7 +139,7 @@ $(document).ready(function() {
           brains.forEach(function(brain) {
             if (zombie.x + 1 == brain.x && zombie.y == brain.y) {
               nextTo = true;
-              if (brain.moveRight(grid.pattern,brains)) {
+              if (brain.moveRight(grid.pattern, brains)) {
                 zombie.moveRight(grid.pattern);
               }
             }
@@ -154,7 +154,7 @@ $(document).ready(function() {
           brains.forEach(function(brain) {
             if (zombie.y + 1 == brain.y && zombie.x == brain.x) {
               nextTo = true;
-              if (brain.moveBottom(grid.pattern,brains)) {
+              if (brain.moveBottom(grid.pattern, brains)) {
                 zombie.moveBottom(grid.pattern);
               }
             }
@@ -165,10 +165,21 @@ $(document).ready(function() {
           break;
         default:
       }
-      window.requestAnimationFrame(paintCanvas);
     };
   };
+  var intervalID = setInterval(win, 1 * 1000);
 
+  function win() {
+    var success=true;
+    trashes.forEach(function (trash){
+      trash.isFull(brains);
+      success*=trash.status;
+    });
+    if (success){
+    alert("FINN");
+    clearInterval(intervalID);
+    }
+  }
   /*window.requestAnimFrame = (function(callback) {
     return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
       function(callback) {
