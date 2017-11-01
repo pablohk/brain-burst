@@ -5,7 +5,7 @@
 */
 function Zombie(x,y,width,height) {
   Movable.call(this,x,y,width,height);
-  this.img = "./media/img/player.png";
+  this.img = "../media/img/player.jpg";
   this.id="Zombie";
 }
 Zombie.prototype=Object.create(Movable.prototype);

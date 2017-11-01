@@ -5,7 +5,7 @@
 */
 function Brick(x,y,width,height) {
   Fixed.call(this,x,y,width,height);
-  this.img = "./media/img/brick.png";
+  this.img = "../media/img/brick.jpg";
   this.id="Brick";
 }
 

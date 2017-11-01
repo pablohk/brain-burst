@@ -5,7 +5,7 @@
 */
 function Brain(x, y, width, height, id) {
   Movable.call(this, x, y, width, height);
-  this.img = "./media/img/brain.jpg";
+  this.img = "../media/img/brain.jpg";
   this.id = id;
 }
 

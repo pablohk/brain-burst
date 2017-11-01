@@ -1,13 +1,16 @@
 $(document).ready(function() {
+  (function() {
+      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+      window.requestAnimationFrame = requestAnimationFrame;
+  })();
 
   // Prepare the canvas layout
-  var canvas = document.getElementById('player-one');
+  var canvas = document.getElementById('one-player');
   var ctx = canvas.getContext('2d');
-  ctx.imageSmoothingEnabled = false;
 
-  // Get the canvas width and height declared in the html tag
-  var width = $('#player-one').width();
-  var height = $('#player-one').height();
+  // Get the canvas width and eight declared in the html tag
+  var width = $('#one-player').width();
+  var height = $('#one-player').height();
 
   // Instancie  new pattern object
   var grid = new Grid();
@@ -16,33 +19,27 @@ $(document).ready(function() {
   var board = new Board(width, height, "#000", grid);
 
   // Instance new Zombie object
-  var zombie = new Zombie(6, 4, board.gapX(), board.gapY(), "time");
+  var zombie = new Zombie(2, 1, board.gapX(), board.gapY(), "time");
 
   // Instance new brains
-  var brains = [new Brain(6, 5, board.gapX(), board.gapY(), 1),
-    new Brain(7, 5, board.gapX(), board.gapY(), 2)
+  var brains = [new Brain(3, 2, board.gapX(), board.gapY(), 1),
+    new Brain(2, 5, board.gapX(), board.gapY(), 2),
+    new Brain(5, 6, board.gapX(), board.gapY(), 2),
   ];
 
   // Instance new Trashes
-  var trashes = [new Trash(6, 8, board.gapX(), board.gapY()),
-    new Trash(7, 8, board.gapX(), board.gapY())
+  var trashes = [new Trash(1, 4, board.gapX(), board.gapY()),
+    new Trash(1, 5, board.gapX(), board.gapY()),
+    new Trash(1, 6, board.gapX(), board.gapY())
   ];
-
-  // Start the game when the user press the star button
-  /*document.getElementById("start-game").onclick = function() {
-    startGame();
-  };*/
-  startGame();
 
   function startGame() {
     //console.log("---In startGame");
-    //clearCanvas();
-    paintCanvas();
+    window.requestAnimationFrame(paintCanvas);
     listenKeyDown();
   }
 
   function paintCanvas() {
-    //console.log("---In paintCanvas");
     $('#x').html("Coordenada Zombie X: " + zombie.x);
     $('#y').html("Coordenada Zombie Y: " + zombie.y);
     prepareBoard(); // Must be the first in paint
@@ -58,10 +55,10 @@ $(document).ready(function() {
         if (eX) {
           img = new Image();
           var brick = new Brick(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
-          img.onload = function() {
+          img.onload=function(){
             ctx.drawImage(img, brick.x, brick.y, brick.width, brick.height);
           };
-          img.src = brick.img;
+            img.src = brick.img;
         } else {
           ctx.fillStyle = 'black';
           ctx.fillRect(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
@@ -71,14 +68,10 @@ $(document).ready(function() {
   }
 
   function paintElement(element) {
-    //console.log("---In prepareElement");
-    //console.log(element);
     var img;
     if (Array.isArray(element)) {
       element.forEach(function(e) {
         img = new Image();
-        //console.log("--prepareElement: forEach");
-        //console.log(e);
         img.onload = function() {
           ctx.drawImage(img, e.x * board.gapX(), e.y * board.gapY(), e.width, e.height);
         };
@@ -101,7 +94,6 @@ $(document).ready(function() {
   // Listen key arrow action.
   function listenKeyDown() {
     window.onkeydown = function(e) {
-      window.requestAnimationFrame(paintCanvas);
       var nextTo = false; // Use to eval if the zombie is next to brain or no
       switch (e.keyCode) {
         case 37: // left
@@ -165,10 +157,17 @@ $(document).ready(function() {
           break;
         default:
       }
+      window.requestAnimationFrame(paintCanvas);
     };
   };
-  var intervalID = setInterval(win, 1 * 1000);
 
+  // Call the win() function continuously
+  var intervalID = setInterval(function(){
+      //window.requestAnimationFrame(paintCanvas);
+      win();
+  }, 0.5 * 1000);
+
+  // Eval if all the brains are places in the trashes and then the game finsih
   function win() {
     var success=true;
     trashes.forEach(function (trash){
@@ -180,12 +179,13 @@ $(document).ready(function() {
     clearInterval(intervalID);
     }
   }
-  /*window.requestAnimFrame = (function(callback) {
-    return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-      function(callback) {
-        window.setTimeout(callback, 1*1000);
-      };
-  })();*/
+
+// Start the game when the user press the star button
+/*document.getElementById("start-game").onclick = function() {
+  startGame();
+};*/
+startGame();
+
   //-----------------------------------------------------
   //END
 });
