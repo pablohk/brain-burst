@@ -5,8 +5,8 @@ body {
 
 .game {
   width: 500px;
-  margin-left: 15vw;
-  margin-top: 15vh;
+  margin-left: 10vw;
+  margin-top: 10vh;
 }
 
 .number {
@@ -24,4 +24,6 @@ body {
   border: 2px solid #DF0101;
   border-radius: 20px;
 }
-button{}
+canvas {
+  opacity: 0.8;
+}

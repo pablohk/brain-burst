@@ -1,21 +1,59 @@
-body{
+body {
   background-image: url('../media/img/index-background.jpg');
   background-size: cover;
 }
+
+.intro {
+  width: 500px;
+  margin-left: 10vw;
+  margin-top: 15vh;
+  color: #FFF;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+  border: 2px solid #DF0101;
+  border-radius: 20px;
+  padding-bottom: 5%;
+}
+
+.intro h1 {
+  font-size: 3em;
+}
+
+.intro div {
+  font-size: 2em;
+  text-align: center;
+  vertical-align: middle;
+  margin-top: 10%;
+  background-color: #0B1907;
+  width: 70%;
+  margin-left: 15%;
+  border-radius: 20px;
+  cursor:pointer;
+}
+
 footer {
   width: 100%;
   position: fixed;
   bottom: 0px;
-  text-align: center;
-  text-transform:uppercase;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: 1.5em;
 }
 
-footer li {
-  list-style: none;
+footer p {
+  color: #FFF;
   display: inline-block;
-  padding-right: 10px;
+  padding-right: 30px;
 }
 
-footer li a {
-    text-decoration: none;
+footer a {
+  color: #FFF;
+  text-decoration: none;
+}
+
+.follow {
+  display: inline-block;
+  width: 2%;
 }
