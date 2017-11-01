@@ -1,7 +1,7 @@
 $(document).ready(function() {
   (function() {
-      var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-      window.requestAnimationFrame = requestAnimationFrame;
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    window.requestAnimationFrame = requestAnimationFrame;
   })();
 
   // Prepare the canvas layout
@@ -12,6 +12,9 @@ $(document).ready(function() {
   var width = $('#one-player').width();
   var height = $('#one-player').height();
 
+  // Instance new Player
+  var player = new Player("IronHack");
+
   // Instancie  new pattern object
   var grid = new Grid();
 
@@ -19,7 +22,7 @@ $(document).ready(function() {
   var board = new Board(width, height, "#000", grid);
 
   // Instance new Zombie object
-  var zombie = new Zombie(2, 1, board.gapX(), board.gapY(), "time");
+  var zombie = new Zombie(2, 2, board.gapX(), board.gapY(), "time");
 
   // Instance new brains
   var brains = [new Brain(3, 2, board.gapX(), board.gapY(), 1),
@@ -36,12 +39,10 @@ $(document).ready(function() {
   function startGame() {
     //console.log("---In startGame");
     window.requestAnimationFrame(paintCanvas);
-    listenKeyDown();
+    player.clock.start();
   }
 
   function paintCanvas() {
-    $('#x').html("Coordenada Zombie X: " + zombie.x);
-    $('#y').html("Coordenada Zombie Y: " + zombie.y);
     prepareBoard(); // Must be the first in paint
     paintElement(trashes); // Must be the second in paint
     paintElement(zombie); // Must be the thirth in paint
@@ -55,10 +56,10 @@ $(document).ready(function() {
         if (eX) {
           img = new Image();
           var brick = new Brick(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
-          img.onload=function(){
+          img.onload = function() {
             ctx.drawImage(img, brick.x, brick.y, brick.width, brick.height);
           };
-            img.src = brick.img;
+          img.src = brick.img;
         } else {
           ctx.fillStyle = 'black';
           ctx.fillRect(indexX * board.gapX(), indexY * board.gapY(), board.gapX(), board.gapY());
@@ -92,100 +93,127 @@ $(document).ready(function() {
   }
 
   // Listen key arrow action.
-  function listenKeyDown() {
-    window.onkeydown = function(e) {
-      var nextTo = false; // Use to eval if the zombie is next to brain or no
-      switch (e.keyCode) {
-        case 37: // left
-          console.log("move left");
-          brains.forEach(function(brain) {
-            if (zombie.x - 1 == brain.x && zombie.y == brain.y) {
-              nextTo = true;
-              if (brain.moveLeft(grid.pattern, brains)) {
-                zombie.moveLeft(grid.pattern);
-              }
-            }
-          });
-          if (!nextTo) {
-            zombie.moveLeft(grid.pattern);
-          }
-          break;
+  window.onkeydown = function(e) {
+    if (e.keyCode == 37 || e.keyCode == 38 ||
+      e.keyCode == 39 || e.keyCode == 40) {
 
-        case 38: // top
-          console.log("move top");
-          brains.forEach(function(brain) {
-            if (zombie.y - 1 == brain.y && zombie.x == brain.x) {
-              nextTo = true;
-              if (brain.moveTop(grid.pattern, brains)) {
-                zombie.moveTop(grid.pattern);
+    }
+    var nextTo = false; // Use to eval if the zombie is next to brain or no
+    switch (e.keyCode) {
+      case 37: // left
+        console.log("move left");
+        brains.forEach(function(brain) {
+          if (zombie.x - 1 == brain.x && zombie.y == brain.y) {
+            nextTo = true;
+            if (brain.moveLeft(grid.pattern, brains)) {
+              if (zombie.moveLeft(grid.pattern)) {
+                player.movements++;
               }
             }
-          });
-          if (!nextTo) {
-            zombie.moveTop(grid.pattern);
           }
-          break;
+        });
+        if (!nextTo) {
+          if (zombie.moveLeft(grid.pattern)) {
+            player.movements++;
+          }
+        }
+        break;
 
-        case 39: // rright
-          console.log("move right");
-          brains.forEach(function(brain) {
-            if (zombie.x + 1 == brain.x && zombie.y == brain.y) {
-              nextTo = true;
-              if (brain.moveRight(grid.pattern, brains)) {
-                zombie.moveRight(grid.pattern);
-              }
+      case 38: // top
+        console.log("move top");
+        brains.forEach(function(brain) {
+          if (zombie.y - 1 == brain.y && zombie.x == brain.x) {
+            nextTo = true;
+            if (brain.moveTop(grid.pattern, brains)) {
+              if(zombie.moveTop(grid.pattern)){
+                player.movements++;
+              };
             }
-          });
-          if (!nextTo) {
-            zombie.moveRight(grid.pattern);
           }
-          break;
+        });
+        if (!nextTo) {
+          if(zombie.moveTop(grid.pattern)){
+            player.movements++;
+          };
+        }
+        break;
 
-        case 40: // bottom
-          console.log("move bottom");
-          brains.forEach(function(brain) {
-            if (zombie.y + 1 == brain.y && zombie.x == brain.x) {
-              nextTo = true;
-              if (brain.moveBottom(grid.pattern, brains)) {
-                zombie.moveBottom(grid.pattern);
-              }
+      case 39: // rright
+        console.log("move right");
+        brains.forEach(function(brain) {
+          if (zombie.x + 1 == brain.x && zombie.y == brain.y) {
+            nextTo = true;
+            if (brain.moveRight(grid.pattern, brains)) {
+              if(zombie.moveRight(grid.pattern)){
+                player.movements++;
+              };
             }
-          });
-          if (!nextTo) {
-            zombie.moveBottom(grid.pattern);
           }
-          break;
-        default:
-      }
-      window.requestAnimationFrame(paintCanvas);
-    };
+        });
+        if (!nextTo) {
+          if(zombie.moveRight(grid.pattern)){
+            player.movements++;
+          };
+        }
+        break;
+
+      case 40: // bottom
+        console.log("move bottom");
+        brains.forEach(function(brain) {
+          if (zombie.y + 1 == brain.y && zombie.x == brain.x) {
+            nextTo = true;
+            if (brain.moveBottom(grid.pattern, brains)) {
+              if(zombie.moveBottom(grid.pattern)){
+                player.movements++;
+              };
+            }
+          }
+        });
+        if (!nextTo) {
+          if(zombie.moveBottom(grid.pattern)){
+            player.movements++;
+          };
+        }
+        break;
+      default:
+    }
+    window.requestAnimationFrame(paintCanvas);
   };
 
+
   // Call the win() function continuously
-  var intervalID = setInterval(function(){
-      //window.requestAnimationFrame(paintCanvas);
-      win();
-  }, 0.5 * 1000);
+  var intervalID = setInterval(function() {
+    //window.requestAnimationFrame(paintCanvas);
+    updateMovements();
+    win();
+
+  }, 0.02 * 1000);
 
   // Eval if all the brains are places in the trashes and then the game finsih
   function win() {
-    var success=true;
-    trashes.forEach(function (trash){
+    var success = true;
+    trashes.forEach(function(trash) {
       trash.isFull(brains);
-      success*=trash.status;
+      success *= trash.status;
     });
-    if (success){
-    alert("FINN");
-    clearInterval(intervalID);
+    if (success) {
+      player.clock.stop();
+      setTimeout(function(){ alert("End"); }, 0.5*1000);
+      clearInterval(intervalID);
     }
   }
 
-// Start the game when the user press the star button
-/*document.getElementById("start-game").onclick = function() {
+  function updateMovements() {
+    $('#movement').text(player.movements);
+  };
   startGame();
-};*/
-startGame();
+document.getElementById("reset").addEventListener("click", function() {
+  location.reload();
+});
 
+document.getElementById("back").addEventListener("click", function() {
+location.href = "../index.html";
+});
   //-----------------------------------------------------
   //END
 });

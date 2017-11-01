@@ -1,4 +1,27 @@
-body{
-  width: 800px;
-  height:600px;
+body {
+  background-image: url('../media/img/index-background.jpg');
+  background-size: cover;
 }
+
+.game {
+  width: 500px;
+  margin-left: 15vw;
+  margin-top: 15vh;
+}
+
+.number {
+  color: #fff;
+  vertical-align: middle;
+  font-size: 1.5em;
+}
+
+.data {
+  padding: 5%;
+  margin-bottom: 2vh;
+}
+
+.border {
+  border: 2px solid #DF0101;
+  border-radius: 20px;
+}
+button{}
