@@ -2,6 +2,7 @@ function Board(width, height,img,grid) {
 Fixed.call(this,null,null,width,height);
   this.img = img;
   this.grid=grid;
+  this.img="../media/img/brick.jpg";
 }
 Board.prototype=Object.create(Fixed.prototype);
 Board.prototype.constructor=Board;

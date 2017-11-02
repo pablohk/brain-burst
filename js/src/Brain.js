@@ -3,10 +3,9 @@
    - id: Brain element identifier.
    - img: Background image of this brain. All Brains have same image.
 */
-function Brain(x, y, width, height, id) {
+function Brain(x, y, width, height) {
   Movable.call(this, x, y, width, height);
   this.img = "../media/img/brain.jpg";
-  this.id = id;
 }
 
 Brain.prototype = Object.create(Movable.prototype);
