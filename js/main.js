@@ -1,8 +1,9 @@
 $(document).ready(function() {
-  (function() {
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+  /*(function() {
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame
+    || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     window.requestAnimationFrame = requestAnimationFrame;
-  })();
+  })();*/
   var game =new Game();
   game.startGame();
 
@@ -95,13 +96,14 @@ $(document).ready(function() {
         break;
       default:
     }
-    window.requestAnimationFrame(game.paintCanvas.bind(game));
   };
 
   // Update the number of movements and check if the player win
   game.intervalID = setInterval(function() {
     $('#movement').text(game.player.movements);
+    window.requestAnimationFrame(game.paintCanvas.bind(game));
     game.win();
+
   } ,0.02 * 1000);
 
   //-----------------------------------------------------

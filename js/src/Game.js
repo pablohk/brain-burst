@@ -15,14 +15,12 @@ function Game() {
     new Trash(1, 6, this.board.gapX(), this.board.gapY())
   ];
   this.intervalID;
-  //this.brick;
 }
+
 Game.prototype=Object.create(Game.prototype);
 Game.prototype.constructor=Game;
 
 Game.prototype.startGame = function() {
-  //console.log("---In startGame");
-  this.paintCanvas();
   this.player.clock.start();
 };
 
@@ -40,11 +38,8 @@ Game.prototype.prepareBoard = function() {
     eY.forEach(function(eX, indexX) {
       if (eX) {
         img = new Image();
-        //this.brick = new Brick(indexX * this.board.gapX(), indexY * this.board.gapY(), this.board.gapX(), this.board.gapY());
-        img.onload = function() {
-          this.ctx.drawImage(img, indexX * this.board.gapX(), indexY * this.board.gapY(), this.board.gapX(), this.board.gapY());
-        }.bind(this);
         img.src = this.board.img;
+        this.ctx.drawImage(img, indexX * this.board.gapX(), indexY * this.board.gapY(), this.board.gapX(), this.board.gapY());
       }
     }, this);
   }, this);
@@ -55,17 +50,13 @@ Game.prototype.paintElement = function(element) {
   if (Array.isArray(element)) {
     element.forEach(function(e) {
       img = new Image();
-      img.onload = function() {
-        this.ctx.drawImage(img, e.x * this.board.gapX(), e.y * this.board.gapY(), e.width, e.height);
-      }.bind(this);
       img.src = e.img;
+      this.ctx.drawImage(img, e.x * this.board.gapX(), e.y * this.board.gapY(), e.width, e.height);
     }, this);
   } else {
     img = new Image();
-    img.onload = function() {
-      this.ctx.drawImage(img, element.x * this.board.gapX(), element.y * this.board.gapY(), element.width, element.height);
-    }.bind(this);
     img.src = element.img;
+      this.ctx.drawImage(img, element.x * this.board.gapX(), element.y * this.board.gapY(), element.width, element.height);
   }
 };
 
@@ -83,7 +74,7 @@ Game.prototype.win=function() {
   },this);
   if (success) {
     this.player.clock.stop();
-    alert("WIIIINN");
     clearInterval(this.intervalID);
+    alert("WIIIINN");
   }
 };
