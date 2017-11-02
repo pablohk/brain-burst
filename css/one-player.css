@@ -1,4 +1,6 @@
 body {
+  margin:0;
+  padding:0;
   background-image: url('../media/img/index-background.jpg');
   background-size: cover;
 }
@@ -26,4 +28,17 @@ body {
 }
 canvas {
   opacity: 0.8;
+}
+#win{
+  position: absolute;
+  width: 630px;
+  height:500px;
+  top:14vh;
+  left:9vw;
+}
+.win-image{
+  background-image: url('../media/img/win2.jpg');
+  background-size: cover;
+  box-sizing: content-box;
+  z-index:1000;
 }

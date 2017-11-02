@@ -101,9 +101,8 @@ $(document).ready(function() {
   // Update the number of movements and check if the player win
   game.intervalID = setInterval(function() {
     $('#movement').text(game.player.movements);
-    window.requestAnimationFrame(game.paintCanvas.bind(game));
     game.win();
-
+    window.requestAnimationFrame(game.paintCanvas.bind(game));
   } ,0.02 * 1000);
 
   //-----------------------------------------------------
