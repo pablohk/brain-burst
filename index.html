@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Brain Trash</title>
   <link href="./css/bootstrap-3.3.7-dist/css/bootstrap.css" type="text/css" rel="stylesheet">
+  <script src="./lib/jquery-3.1.1.min.js" text="text/javascript"></script>
   <link href="./css/main.css" type="text/css" rel="stylesheet">
 </head>
 
@@ -15,7 +16,12 @@
     <div class="float-left intro">
       <h1>BRAIN TRASH</h1>
       <div id="start-game" onclick="location.href='./html/one-player.html';">start</div>
-      <div id="how-play" onclick="location.href='./html/one-player.html';">How to play</div>
+      <div id="how-play" onclick="show()">How to play</div>
+    </div>
+    <div id="instructions" class="text-center">
+      <p>
+        This game is for one player and it controller by arrows heyboard. The goal is move all brains in the trash collection. Take care the order how move the brains. Only can move 1 brain.</p>
+      <img class="arrow-key" src="./media/img/arrow-key.png">
     </div>
     <footer>
       <p>&copy; pablo carmona</p>
@@ -23,6 +29,22 @@
       <a href="https://es.linkedin.com/in/pablo-carmona-torres-26647561/">    <img src="./media/img/linkedin.png" class="follow"></a>
     </footer>
   </div>
+  <audio
+    src="./media/sound/index.mp3"
+    autoplay>
+    Your browser does not support the <code>audio</code> element.
+  </audio>
+  <script>
+    function show() {
+        $('#instructions').toggle();
+      if($('#instructions').is(':visible')){
+        $('#how-play').text('CLOSE');
+      }else {
+        $('#how-play').text('How to play');
+      }
+
+    }
+  </script>
 </body>
 
 </html>

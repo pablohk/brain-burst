@@ -5,19 +5,20 @@ function Game() {
   this.player = new Player("IronHack");
   this.grid = new Grid();
   this.board = new Board(this.width, this.height, "#000", this.grid);
-  /*this.zombie = new Zombie(2, 2, this.board.gapX(), this.board.gapY());
+  this.zombie = new Zombie(2, 2, this.board.gapX(), this.board.gapY());
   this.brains = [new Brain(3, 2, this.board.gapX(), this.board.gapY()),
-    new Brain(2, 5, this.board.gapX(), this.board.gapY()),
+    new Brain(3, 5, this.board.gapX(), this.board.gapY()),
     new Brain(5, 6, this.board.gapX(), this.board.gapY())
   ];
   this.trashes = [new Trash(1, 4, this.board.gapX(), this.board.gapY()),
-    new Trash(1, 5, this.board.gapX(), this.board.gapY()),
+    new Trash(2, 5, this.board.gapX(), this.board.gapY()),
     new Trash(1, 6, this.board.gapX(), this.board.gapY())
-  ];*/
+  ];
+/*
   this.zombie = new Zombie(3, 6, this.board.gapX(), this.board.gapY());
   this.brains = [new Brain(2, 6, this.board.gapX(), this.board.gapY())];
-
   this.trashes = [new Trash(1, 6, this.board.gapX(), this.board.gapY())];
+*/
   this.intervalID;
 }
 

@@ -6,9 +6,9 @@ body {
 }
 
 .game {
-  width: 500px;
-  margin-left: 10vw;
-  margin-top: 10vh;
+  width: 600px;
+  margin-left: 13vw;
+  margin-top: 13vh;
 }
 
 .number {
@@ -31,10 +31,10 @@ canvas {
 }
 #win{
   position: absolute;
-  width: 630px;
-  height:500px;
-  top:14vh;
-  left:9vw;
+  width: 730px;
+  height:542px;
+  top:17vh;
+  left:11vw;
 }
 .win-image{
   background-image: url('../media/img/win2.jpg');

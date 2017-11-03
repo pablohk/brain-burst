@@ -1,5 +1,5 @@
 body {
-  background-image: url('../media/img/index-background.jpg');
+  background-image: url('../media/img/index-background.jpg');*/
   background-size: cover;
 }
 
@@ -7,7 +7,7 @@ body {
   width: 500px;
   margin-left: 10vw;
   margin-top: 15vh;
-  color: #FFF;
+  color: #8FE803;;
   display: inline-block;
   text-align: center;
   vertical-align: middle;
@@ -26,7 +26,7 @@ body {
   text-align: center;
   vertical-align: middle;
   margin-top: 10%;
-  background-color: #0B1907;
+  background-color: #272728;
   width: 70%;
   margin-left: 15%;
   border-radius: 20px;
@@ -56,4 +56,19 @@ footer a {
 .follow {
   display: inline-block;
   width: 2%;
+}
+
+#instructions {
+  position:absolute;
+  width: 500px;
+  top:55vh;
+  left:11vw;
+  background-color: #272728;
+  border-radius: 20px;
+  display:none;
+}
+
+#instructions p {
+font-size:1.3em;
+color:#8FE803;
 }

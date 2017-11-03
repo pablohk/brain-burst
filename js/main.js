@@ -1,20 +1,19 @@
 $(document).ready(function() {
-  /*(function() {
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame
-    || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+  (function() {
+    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
     window.requestAnimationFrame = requestAnimationFrame;
-  })();*/
-  var game =new Game();
+  })();
+  var game = new Game();
   game.startGame();
 
   document.getElementById("reset").addEventListener("click", function() {
-  location.reload();
+    location.reload();
   });
 
   document.getElementById("back").addEventListener("click", function() {
-  location.href = "../index.html";
+    location.href = "../index.html";
   });
-
 
   window.onkeydown = function(e) {
     var nextTo = false; // Use to eval if the zombie is next to brain or no
@@ -44,33 +43,33 @@ $(document).ready(function() {
           if (game.zombie.y - 1 == brain.y && game.zombie.x == brain.x) {
             nextTo = true;
             if (brain.moveTop(game.grid.pattern, game.brains)) {
-              if(game.zombie.moveTop(game.grid.pattern)){
+              if (game.zombie.moveTop(game.grid.pattern)) {
                 game.player.movements++;
               };
             }
           }
         });
         if (!nextTo) {
-          if(game.zombie.moveTop(game.grid.pattern)){
+          if (game.zombie.moveTop(game.grid.pattern)) {
             game.player.movements++;
           };
         }
         break;
 
-      case 39: // rright
+      case 39: // right
         console.log("move right");
         game.brains.forEach(function(brain) {
           if (game.zombie.x + 1 == brain.x && game.zombie.y == brain.y) {
             nextTo = true;
             if (brain.moveRight(game.grid.pattern, game.brains)) {
-              if(game.zombie.moveRight(game.grid.pattern)){
+              if (game.zombie.moveRight(game.grid.pattern)) {
                 game.player.movements++;
               };
             }
           }
         });
         if (!nextTo) {
-          if(game.zombie.moveRight(game.grid.pattern)){
+          if (game.zombie.moveRight(game.grid.pattern)) {
             game.player.movements++;
           };
         }
@@ -82,14 +81,14 @@ $(document).ready(function() {
           if (game.zombie.y + 1 == brain.y && game.zombie.x == brain.x) {
             nextTo = true;
             if (brain.moveBottom(game.grid.pattern, game.brains)) {
-              if(game.zombie.moveBottom(game.grid.pattern)){
+              if (game.zombie.moveBottom(game.grid.pattern)) {
                 game.player.movements++;
               };
             }
           }
         });
         if (!nextTo) {
-          if(game.zombie.moveBottom(game.grid.pattern)){
+          if (game.zombie.moveBottom(game.grid.pattern)) {
             game.player.movements++;
           };
         }
@@ -103,7 +102,7 @@ $(document).ready(function() {
     $('#movement').text(game.player.movements);
     game.win();
     window.requestAnimationFrame(game.paintCanvas.bind(game));
-  } ,0.02 * 1000);
+  }, 0.02 * 1000);
 
   //-----------------------------------------------------
   //END
