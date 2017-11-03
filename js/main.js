@@ -93,9 +93,9 @@ $(document).ready(function() {
           };
         }
         break;
-      default:
+
     }
-  };
+    };
 
   // Update the number of movements and check if the player win
   game.intervalID = setInterval(function() {

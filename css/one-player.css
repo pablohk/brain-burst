@@ -31,10 +31,10 @@ canvas {
 }
 #win{
   position: absolute;
-  width: 730px;
-  height:542px;
-  top:17vh;
-  left:11vw;
+  width: 1080px;
+  height:550px;
+  top:20vh;
+  left:18vw;
 }
 .win-image{
   background-image: url('../media/img/win2.jpg');
