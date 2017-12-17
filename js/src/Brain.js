@@ -3,8 +3,8 @@
    - id: Brain element identifier.
    - img: Background image of this brain. All Brains have same image.
 */
-function Brain(x, y, width, height) {
-  Movable.call(this, x, y, width, height);
+function Brain(x, y, width, height,level) {
+  Movable.call(this, x, y, width, height,level);
   this.img = "../media/img/brain.jpg";
 }
 

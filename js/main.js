@@ -1,14 +1,16 @@
 $(document).ready(function() {
   (function() {
-    var requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-      window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    var requestAnimationFrame = window.requestAnimationFrame ||
+    window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame ||
+    window.msRequestAnimationFrame;
     window.requestAnimationFrame = requestAnimationFrame;
   })();
-  var game = new Game();
+
+  var game = new Game(1);
   game.startGame();
 
   document.getElementById("reset").addEventListener("click", function() {
-    location.reload();
+    game.startGame();
   });
 
   document.getElementById("back").addEventListener("click", function() {

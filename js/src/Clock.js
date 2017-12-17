@@ -49,6 +49,7 @@ Clock.prototype.paintingNumbers = function() {
 };
 
 Clock.prototype.reset = function() {
+  clearInterval(this.status);
   this.nimDec = 0;
   this.minCen = 0;
   this.secDec = 0;
